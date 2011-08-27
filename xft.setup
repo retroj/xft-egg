@@ -1,0 +1,19 @@
+;; -*- scheme -*-
+
+(compile -s -O3 -d1 -lXft
+         -C "`pkg-config --cflags xft`"
+         -L "`pkg-config --libs xft`"
+         "xft.scm" -j xft)
+(compile -c -O3 -d1 -lXft
+         -C "`pkg-config --cflags xft`"
+         -L "`pkg-config --libs xft`"
+         "xft.scm" -unit xft)
+(compile -s -O3 -d0 "xft.import.scm"
+         -C "`pkg-config --cflags xft`"
+         -L "`pkg-config --libs xft`")
+
+(install-extension
+ 'xft
+ '("xft.o" "xft.so" "xft.import.so")
+ '((version 0.1)
+   (static "xft.o")))
