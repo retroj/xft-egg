@@ -78,6 +78,14 @@
 (foreign-declare "#include <X11/Xft/Xft.h>")
 
 ;;;
+;;; Utils
+;;;
+
+(define (inexact->int n)
+  (inexact->exact (round n)))
+
+
+;;;
 ;;; FontConfig
 ;;;
 
@@ -583,58 +591,17 @@
                   (const (c-pointer ft_uint))  ;; glyphs
                   int))                        ;; nglyphs
 
-(define xft-draw-string-8
-  (foreign-lambda void XftDrawString8
-                  xftdraw                      ;; draw
-                  (const xftcolor)             ;; color
-                  xftfont                      ;; XftFont* pub
-                  int                          ;; x
-                  int                          ;; y
-                  (const c-string)
-                  ;;(const (c-pointer fcchar8))  ;; string
-                  int))                        ;; len
-
-(define xft-draw-string-16
-  (foreign-lambda void XftDrawString16
-                  xftdraw                      ;; draw
-                  (const xftcolor)             ;; color
-                  xftfont                      ;; XftFont* pub
-                  int                          ;; x
-                  int                          ;; y
-                  (const (c-pointer fcchar16)) ;; string
-                  int))                        ;; len
-
-(define xft-draw-string-32
-  (foreign-lambda void XftDrawString32
-                  xftdraw                      ;; draw
-                  (const xftcolor)             ;; color
-                  xftfont                      ;; XftFont* pub
-                  int                          ;; x
-                  int                          ;; y
-                  (const (c-pointer fcchar32)) ;; string
-                  int))                        ;; len
-
-(define xft-draw-string-utf8
-  (foreign-lambda void XftDrawStringUtf8
-                  xftdraw                      ;; draw
-                  (const xftcolor)             ;; color
-                  xftfont                      ;; XftFont* pub
-                  int                          ;; x
-                  int                          ;; y
-                  (const c-string)
-                  ;; (const (c-pointer fcchar8))  ;; string
-                  int))                        ;; len
-
-(define xft-draw-string-utf16
-  (foreign-lambda void XftDrawStringUtf16
-                  xftdraw                      ;; draw
-                  (const xftcolor)             ;; color
-                  xftfont                      ;; XftFont* pub
-                  int                          ;; x
-                  int                          ;; y
-                  (const (c-pointer fcchar8))  ;; string
-                  fcendian                     ;; endian
-                  int))                        ;; len
+(define (xft-draw-string draw font color x y string)
+  ((foreign-lambda void XftDrawStringUtf8
+                   xftdraw
+                   (const xftcolor)
+                   xftfont
+                   int
+                   int
+                   (const c-string)
+                   int)
+   draw color font (inexact->int x) (inexact->int y)
+   string (string-length string)))
 
 (define xft-draw-char-spec
   (foreign-lambda void XftDrawCharSpec
@@ -680,54 +647,22 @@
 ;;; Extents
 ;;;
 
-(define xft-glyph-extents
-  (foreign-lambda void XftGlyphExtents
-                  xdisplay                    ;; dpy
-                  xftfont                     ;; pub
-                  (const (c-pointer ft_uint)) ;; glyphs
-                  int                         ;; nglyphs
-                  xglyphinfo))                ;; extents
+(define (xft-text-extents display font string)
+  (let ((glyphinfo (make-xglyphinfo)))
+    ((foreign-lambda void XftTextExtentsUtf8
+                     xdisplay
+                     xftfont
+                     (const c-string)
+                     int
+                     xglyphinfo)
+     display font string (string-length string) glyphinfo)
+    (list (xglyphinfo-width glyphinfo)
+          (xglyphinfo-height glyphinfo)
+          (xglyphinfo-x glyphinfo)
+          (xglyphinfo-y glyphinfo)
+          (xglyphinfo-xoff glyphinfo)
+          (xglyphinfo-yoff glyphinfo))))
 
-(define xft-text-extents-8
-  (foreign-lambda void XftTextExtents8
-                  xdisplay                    ;; dpy
-                  xftfont                     ;; pub
-                  (const (c-pointer fcchar8)) ;; string
-                  int                         ;; len
-                  xglyphinfo))                ;; extents
-
-(define xft-text-extents-16
-  (foreign-lambda void XftTextExtents16
-                  xdisplay                     ;; dpy
-                  xftfont                      ;; pub
-                  (const (c-pointer fcchar16)) ;; string
-                  int                          ;; len
-                  xglyphinfo))                 ;; extents
-
-(define xft-text-extents-32
-  (foreign-lambda void XftTextExtents32
-                  xdisplay                     ;; dpy
-                  xftfont                      ;; pub
-                  (const (c-pointer fcchar32)) ;; string
-                  int                          ;; len
-                  xglyphinfo))                 ;; extents
-
-(define xft-text-extents-utf8
-  (foreign-lambda void XftTextExtentsUtf8
-                  xdisplay                    ;; dpy
-                  xftfont                     ;; pub
-                  (const (c-pointer fcchar8)) ;; string
-                  int                         ;; len
-                  xglyphinfo))                ;; extents
-
-(define xft-text-extents-utf16
-  (foreign-lambda void XftTextExtentsUtf16
-                  xdisplay                    ;; dpy
-                  xftfont                     ;; pub
-                  (const (c-pointer fcchar8)) ;; string
-                  fcendian                    ;; endian
-                  int                         ;; len
-                  xglyphinfo))                ;; extents
 
 
 ;;;
