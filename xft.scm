@@ -75,6 +75,8 @@
 
 (import chicken scheme foreign foreigners)
 
+(use xtypes)
+
 (foreign-declare "#include <X11/Xft/Xft.h>")
 
 ;;;
@@ -123,66 +125,18 @@
 ;;;
 ;;; Xlib
 ;;;
-(define-foreign-type drawable unsigned-long)
 
+(define-foreign-type drawable unsigned-long)
 (define-foreign-type xdisplay (c-pointer (struct _XDisplay)))
 (define-foreign-type visual c-pointer)
 (define-foreign-type colormap unsigned-long)
 (define-foreign-type pixmap unsigned-long)
 (define-foreign-type picture unsigned-long)
-
-(define-foreign-record-type (xrectangle XRectangle)
-  (constructor: %make-xrectangle)
-  (destructor: %free-xrectangle)
-  (short x xrectangle-x xrectangle-x-set!)
-  (short y xrectangle-y xrectangle-y-set!)
-  (unsigned-short width xrectangle-width xrectangle-width-set!)
-  (unsigned-short height xrectangle-height xrectangle-height-set!))
-
+(define-foreign-type xrectangle c-pointer)
 (define-foreign-type xregion (c-pointer (struct _XRegion)))
-
 (define-foreign-type xglyphinfo c-pointer)
+(define-foreign-type xrendercolor c-pointer)
 
-
-;;;
-;;; XRender
-;;;
-
-(define-foreign-record-type (xrendercolor XRenderColor)
-  (constructor: %make-xrendercolor)
-  (destructor: %free-xrendercolor)
-  (unsigned-short red %xrendercolor-red %xrendercolor-red-set!)
-  (unsigned-short green %xrendercolor-green %xrendercolor-green-set!)
-  (unsigned-short blue %xrendercolor-blue %xrendercolor-blue-set!)
-  (unsigned-short alpha %xrendercolor-alpha %xrendercolor-alpha-set!))
-
-(define make-xrendercolor
-  (case-lambda
-   ((r g b a)
-    (define (scale x)
-      (inexact->exact (round (* 65535 (cond ((> x 1.0) 1.0)
-                                            ((< x 0.0) 0.0)
-                                            (else x))))))
-    (let ((c (%make-xrendercolor)))
-      (%xrendercolor-red-set! c (scale r))
-      (%xrendercolor-green-set! c (scale g))
-      (%xrendercolor-blue-set! c (scale b))
-      (%xrendercolor-alpha-set! c (scale a))
-      (set-finalizer! c %free-xrendercolor)
-      c))
-   ((r g b) (make-xrendercolor r g b 1.0))))
-
-(define (xrendercolor-red c)
-  (/ (%xrendercolor-red c) 65535.0))
-
-(define (xrendercolor-green c)
-  (/ (%xrendercolor-green c) 65535.0))
-
-(define (xrendercolor-blue c)
-  (/ (%xrendercolor-blue c) 65535.0))
-
-(define (xrendercolor-alpha c)
-  (/ (%xrendercolor-alpha c) 65535.0))
 
 ;;;
 ;;; XftColor

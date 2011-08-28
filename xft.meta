@@ -2,7 +2,7 @@
 
 ((license "BSD")
  (category graphics)
- (needs foreigners miscmacros)
+ (needs foreigners xtypes)
  (test-depends simple-sha1 test)
  (author "John J. Foerch")
  (synopsis "Bindings for xft")
