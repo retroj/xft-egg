@@ -306,12 +306,12 @@
   (foreign-lambda picture XftDrawPicture
                   xftdraw))
 
-(define xftdraw-set-clip
+(define xftdraw-set-clip!
   (foreign-lambda bool XftDrawSetClip
                   xftdraw   ;; draw
                   xregion)) ;; r
 
-(define xftdraw-set-clip-rectangles
+(define xftdraw-set-clip-rectangles!
   (foreign-lambda bool XftDrawSetClipRectangles
                   xftdraw                    ;; draw
                   int                        ;; xOrigin
@@ -319,7 +319,7 @@
                   (const xrectangle)         ;; *rects
                   int))                      ;; n
 
-(define xftdraw-set-subwindow-mode
+(define xftdraw-set-subwindow-mode!
   (foreign-lambda void XftDrawSetSubwindowMode
                   xftdraw             ;; draw
                   int))               ;; mode
