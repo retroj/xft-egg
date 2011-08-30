@@ -112,7 +112,16 @@
   ((noid) FcResultNoId)
   ((outofmemory) FcResultOutOfMemory))
 
-(define-foreign-type fcfontset (c-pointer (struct _FcFontSet)))
+(define-foreign-record-type (fcfontset FcFontSet)
+  (constructor: make-fcfontset)
+  (destructor: free-fcfontset)
+  (int nfont fcfontset-nfont)
+  (int sfont fcfontset-sfont)
+  ((c-pointer fcpattern) fonts fcfontset-fonts))
+
+(define fcfontset-print
+  (foreign-lambda void FcFontSetPrint
+                  (const fcfontset)))
 
 ;;;
 ;;; FreeType
@@ -518,6 +527,8 @@
                   xdisplay ;; dpy
                   int      ;; screen
                   ;; ... (variable number of args)
+                  c-pointer ;; null
+                  c-pointer ;; null
                   )) ;;  _X_SENTINEL(0)
 
 (define xft-init-ft-library
@@ -610,12 +621,7 @@
                      int
                      xglyphinfo)
      display font string (string-length string) glyphinfo)
-    (list (xglyphinfo-width glyphinfo)
-          (xglyphinfo-height glyphinfo)
-          (xglyphinfo-x glyphinfo)
-          (xglyphinfo-y glyphinfo)
-          (xglyphinfo-xoff glyphinfo)
-          (xglyphinfo-yoff glyphinfo))))
+    glyphinfo))
 
 
 
