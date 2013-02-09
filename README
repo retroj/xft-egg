@@ -1,0 +1,41 @@
+
+== Description
+
+Bindings for Xft.  This is still a very early work in progress, and the
+API *will change* in future releases.
+
+
+== Authors
+
+* John J Foerch
+
+
+== Requirements
+=== Chicken Eggs
+
+* [[foreigners]]
+* [[xtypes]]
+
+
+=== C Headers
+
+* Xft (libxft-dev)
+
+
+== API
+
+
+
+
+== Examples
+
+
+
+== License
+
+BSD
+
+
+== Version History
+
+* 0.1 (January 1, 2012) initial release
