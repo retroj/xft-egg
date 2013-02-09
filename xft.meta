@@ -5,5 +5,4 @@
  (needs foreigners xtypes)
  (test-depends simple-sha1 test)
  (author "John J. Foerch")
- (synopsis "Bindings for xft")
- (files "xft.meta" "xft.setup" "xft.scm"))
+ (synopsis "Bindings for xft"))
