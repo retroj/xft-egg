@@ -1,4 +1,4 @@
-;; Copyright 2011 John J Foerch. All rights reserved.
+;; Copyright 2011-2013 John J Foerch. All rights reserved.
 ;; 
 ;; Redistribution and use in source and binary forms, with or without
 ;; modification, are permitted provided that the following conditions are
@@ -25,7 +25,132 @@
 ;; ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 (module xft
-        *
+    (
+     ;; FontConfig
+
+     ;; XftColor
+     make-xftcolor
+     xftcolor-red
+     xftcolor-green
+     xftcolor-blue
+     xftcolor-alpha
+
+     ;; XftDraw
+     xftdraw-create
+     xftdraw-create-bitmap
+     xftdraw-create-alpha
+     xftdraw-change
+     xftdraw-display
+     xftdraw-drawable
+     xftdraw-colormap
+     xftdraw-visual
+     xftdraw-destroy
+     xftdraw-picture
+     xftdraw-set-clip!
+     xftdraw-set-clip-rectangles!
+     xftdraw-set-subwindow-mode!
+
+     ;; XftFontInfo
+     xft-fontinfo-create
+     xft-fontinfo-destroy
+     xft-fontinfo-hash
+     xft-fontinfo-equal
+
+     ;; XftFont
+     make-xftfont
+     free-xftfont
+     xftfont-ascent
+     xftfont-descent
+     xftfont-height
+     xftfont-max-advance-width
+     xftfont-charset
+     xftfont-pattern
+     xftfont-match
+     xft-font-open
+     xft-font-open/name
+     xft-font-open/xlfd
+     xft-font-open/info
+     xft-font-open/pattern
+     xft-lock-face
+     xft-unlock-face
+     xft-font-copy
+     xft-font-close
+     xft-font-load-glyphs
+     xft-font-unload-glyphs
+     xft-font-check-glyph
+     xft-char-exists
+     xft-char-index
+
+     ;; XftCharSpec
+     make-xftcharspec
+     free-xftcharspec
+     xftcharspec-ucs4
+     xftcharspec-x
+     xftcharspec-y
+
+     ;; XftCharFontSpec
+     make-xftcharfontspec
+     free-xftcharfontspec
+     xftcharfontspec-font
+     xftcharfontspec-ucs4
+     xftcharfontspec-x
+     xftcharfontspec-y
+
+     ;; XftGlyphSpec
+     make-xftglyphspec
+     free-xftglyphspec
+     xftglyphspec-glyph
+     xftglyphspec-x
+     xftglyphspec-y
+
+     ;; XftGlyphFontSpec
+     make-xftglyphfontspec
+     free-xftglyphfontspec
+     xftglyphfontspec-font
+     xftglyphspec-glyph
+     xftglyphfontspec-x
+     xftglyphfontspec-y
+
+     ;; Misc
+     xft-default-has-render
+     xft-default-set
+     xft-default-substitute
+     xft-name-parse
+     xft-xlfd-parse
+     xft-init
+     xft-get-version
+     xft-list-fonts
+     xft-init-ft-library
+
+     ;; Draw on Drawables
+     xft-draw-src-picture
+     xft-draw-glyphs
+     xft-draw-string
+     xft-draw-char-spec
+     xft-draw-char-font-spec
+     xft-draw-glyph-spec
+     xft-draw-glyph-font-spec
+     xft-draw-rect
+
+     ;; Extents
+     xft-text-extents
+
+     ;; Rendering
+     xft-glyph-render
+     xft-glyph-spec-render
+     xft-char-spec-render
+     xft-glyph-font-spec-render
+     xft-char-font-spec-render
+     xft-text-render-8
+     xft-text-render-16
+     xft-text-render-16be
+     xft-text-render-16le
+     xft-text-render-32
+     xft-text-render-32be
+     xft-text-render-32le
+     xft-text-render-utf8
+     xft-text-render-utf16
+     )
 
 ;;; MISC
 ;;;
