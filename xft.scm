@@ -98,9 +98,10 @@
 
 
 
-(import chicken scheme foreign foreigners)
+(import chicken scheme foreign)
 
-(use xtypes)
+(use foreigners
+     xtypes)
 
 (foreign-declare "#include <X11/Xft/Xft.h>")
 
